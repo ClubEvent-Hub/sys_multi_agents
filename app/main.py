@@ -1,60 +1,58 @@
 import os
 from dotenv import load_dotenv
-from crewai import Agent, Task, Crew
-import openai  # <--- ajout
+from crews.main_crew import ClubEventHubCrew
 
-# Charger les variables d'environnement
+# Load environment variables
 load_dotenv()
 
-# Rediriger CrewAI vers OpenRouter
-openai.api_base = os.getenv("OPENAI_API_BASE", "https://openrouter.ai/api/v1")
-openai.api_key = os.getenv("OPENAI_API_KEY")
-
-
-
-def test_crewai_installation():
-    print("🧪 Test d'installation CrewAI...")
+def main():
+    """Main application entry point"""
     
-    # Vérifier la clé API
-    api_key = os.getenv("OPENAI_API_KEY")
-    if not api_key:
-        print("❌ OPENAI_API_KEY non trouvée")
-        return False
+    # Initialize the crew
+    crew = ClubEventHubCrew()
     
-    print("✅ OPENAI_API_KEY trouvée",os.getenv("OPENAI_API_KEY")[:10] + "...")
+    print("=" * 60)
+    print("Welcome to ClubEvent Hub AI Assistant")
+    print("=" * 60)
     
-    # Test simple avec CrewAI
-    try:
-        # Créer un agent simple
-        researcher = Agent(
-            role="Assistant de Test",
-            goal="Tester l'installation de CrewAI",
-            backstory="Tu es un assistant utile pour vérifier que tout fonctionne correctement.",
-            verbose=True
-        )
-        
-        # Créer une tâche simple
-        test_task = Task(
-            description="Dis 'Bonjour, CrewAI fonctionne correctement !'",
-            agent=researcher,
-            expected_output="Message de confirmation"
-        )
-        
-        # Créer l'équipe
-        test_crew = Crew(
-            agents=[researcher],
-            tasks=[test_task],
-            verbose=True
-        )
-        
-        # Exécuter le test
-        result = test_crew.kickoff()
-        print(f"✅ Test réussi: {result}")
-        return True
-        
-    except Exception as e:
-        print(f"❌ Erreur lors du test: {e}")
-        return False
+    # Example 1: General query routing
+    print("\n--- Example 1: General Query ---")
+    result = crew.process_student_query(
+        "I'm interested in AI and machine learning. What clubs should I join?"
+    )
+    print(f"\nResult: {result}")
+    
+    # Example 2: Club-specific query
+    print("\n--- Example 2: Club Query ---")
+    result = crew.handle_club_query(
+        club_id="club123",
+        student_question="How can I join the AI Club? What are the requirements?",
+        club_personality="technical and innovative"
+    )
+    print(f"\nResult: {result}")
+    
+    # Example 3: Personalized recommendations
+    print("\n--- Example 3: Recommendations ---")
+    result = crew.handle_recommendation_request(student_id="student123")
+    print(f"\nResult: {result}")
+    
+    # Example 4: Event search
+    print("\n--- Example 4: Event Search ---")
+    result = crew.handle_search_query(
+        search_query="Show me AI events this month",
+        filters={"category": "Technology"}
+    )
+    print(f"\nResult: {result}")
+    
+    # Example 5: Student onboarding
+    print("\n--- Example 5: Onboarding ---")
+    result = crew.handle_onboarding(student_id="student456")
+    print(f"\nResult: {result}")
+    
+    # Example 6: Weekly digest
+    print("\n--- Example 6: Weekly Digest ---")
+    result = crew.handle_weekly_digest(student_id="student123")
+    print(f"\nResult: {result}")
 
 if __name__ == "__main__":
-    test_crewai_installation()
+    main()
