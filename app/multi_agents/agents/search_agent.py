@@ -1,6 +1,7 @@
 from crewai import Agent
-from tools.jsontool import JSONDatabase
+from tools.databasetool import DatabaseTool
 from langchain_openai import ChatOpenAI
+import os
 
 def create_search_agent() -> Agent:
     """Create the Event Discovery and Search Agent"""
@@ -14,8 +15,13 @@ def create_search_agent() -> Agent:
         seats to help students not miss out on great opportunities.""",
         verbose=True,
         allow_delegation=False,
-        tools=[
-            JSONDatabase()
+          tools=[
+            DatabaseTool()
         ],
-        llm=ChatOpenAI(model="gpt-4", temperature=0.5)
+        llm=ChatOpenAI(
+            model=os.getenv("OPENAI_MODEL", "gpt-4"),
+            temperature=float(os.getenv("OPENAI_TEMPERATURE", "0.7")),
+            api_key=os.getenv("OPENAI_API_KEY")
+        ),
+         memory=True
     )

@@ -1,5 +1,9 @@
 from crewai import Agent
-from tools.jsontool import JSONDatabase
+from tools.databasetool import DatabaseTool
+from langchain_openai import ChatOpenAI
+import os
+
+
 from langchain_openai import ChatOpenAI
 
 def create_master_orchestrator() -> Agent:
@@ -12,8 +16,13 @@ def create_master_orchestrator() -> Agent:
         conversation context and provide backup responses when needed.""",
         verbose=True,
         allow_delegation=True,
-        tools=[
-            JSONDatabase()
+         tools=[
+            DatabaseTool()
         ],
-        llm=ChatOpenAI(model="gpt-4", temperature=0.7)
+        llm=ChatOpenAI(
+            model=os.getenv("OPENAI_MODEL", "gpt-4"),
+            temperature=float(os.getenv("OPENAI_TEMPERATURE", "0.7")),
+            api_key=os.getenv("OPENAI_API_KEY")
+        ),
+         memory=True
     )

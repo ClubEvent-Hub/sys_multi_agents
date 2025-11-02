@@ -1,6 +1,7 @@
 from crewai import Agent
-from tools.jsontool import JSONDatabase
+from tools.databasetool import DatabaseTool
 from langchain_openai import ChatOpenAI
+import os
 
 def create_onboarding_agent() -> Agent:
     """Create the Onboarding and Profile Builder Agent"""
@@ -15,11 +16,13 @@ def create_onboarding_agent() -> Agent:
         students' interests evolve throughout their university journey.""",
         verbose=True,
         allow_delegation=True,
-        tools=[
-            JSONDatabase()
-
-            
+          tools=[
+            DatabaseTool()
         ],
-        llm=ChatOpenAI(model="gpt-4", temperature=0.7),
-        memory=True
+        llm=ChatOpenAI(
+            model=os.getenv("OPENAI_MODEL", "gpt-4"),
+            temperature=float(os.getenv("OPENAI_TEMPERATURE", "0.7")),
+            api_key=os.getenv("OPENAI_API_KEY")
+        ),
+         memory=True
     )
