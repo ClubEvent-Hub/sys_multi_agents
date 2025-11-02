@@ -1,20 +1,18 @@
 from crewai import Agent
 from ..tools.databasetool import DatabaseTool
-from langchain_openai import ChatOpenAI
 import os
 from dotenv import load_dotenv
+import openai
+
 
 load_dotenv()
 
-# Configure ChatOpenAI for OpenRouter
-def get_llm():
-    return ChatOpenAI(
-        api_key=os.getenv("OPENAI_API_KEY"),
-        base_url=os.getenv("OPENAI_API_BASE", "https://openrouter.ai/api/v1"),
-        model=os.getenv("OPENAI_MODEL", "openai/gpt-4o-mini"),
-        temperature=0.3
-    )
 
+openai.api_base = os.getenv("OPENAI_API_BASE", "https://openrouter.ai/api/v1")
+openai.api_key = os.getenv("OPENAI_API_KEY")
+
+
+MODEL = os.getenv("OPENAI_MODEL", "gpt-4o-mini")
 
 def create_master_orchestrator() -> Agent:
     return Agent(
@@ -26,9 +24,9 @@ def create_master_orchestrator() -> Agent:
         conversation context and provide backup responses when needed.""",
         verbose=True,
         allow_delegation=True,
-        tools=[
+         tools=[
             DatabaseTool()
         ],
-        llm=get_llm(),
-        memory=True
+        llm= MODEL,
+         memory=True
     )

@@ -1,19 +1,6 @@
 from crewai import Agent
 from ..tools.databasetool import DatabaseTool
-from langchain_openai import ChatOpenAI
 import os
-from dotenv import load_dotenv
-
-load_dotenv()
-
-# Configure ChatOpenAI for OpenRouter
-def get_llm():
-    return ChatOpenAI(
-        api_key=os.getenv("OPENAI_API_KEY"),
-        base_url=os.getenv("OPENAI_API_BASE", "https://openrouter.ai/api/v1"),
-        model=os.getenv("OPENAI_MODEL", "openai/gpt-4o-mini"),
-        temperature=0.3
-    )
 from dotenv import load_dotenv
 import openai
 
@@ -46,6 +33,6 @@ def create_onboarding_agent() -> Agent:
           tools=[
             DatabaseTool()
         ],
-        llm=get_llm(),
+        llm=MODEL,
          memory=True
     )
