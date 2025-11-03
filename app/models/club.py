@@ -10,6 +10,8 @@ class Club(Base):
     
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String(100), nullable=False, unique=True, index=True)
+    email = Column(String(100), unique=True, nullable=False, index=True)  # ✅ AJOUTÉ
+    password_hash = Column(String(255), nullable=False)
     description = Column(Text)
     mission = Column(Text)
     history = Column(Text)
