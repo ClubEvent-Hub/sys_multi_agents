@@ -1,7 +1,6 @@
 from crewai import Task
 
 def create_personalized_recommendations_task(agent, student_id: str) -> Task:
-
     return Task(
         description=f"""Generate personalized recommendations for student {student_id}.
         
@@ -22,13 +21,25 @@ def create_personalized_recommendations_task(agent, student_id: str) -> Task:
         - Title and description
         - Match score
         - Explanation of why it's recommended
-        - Deadline or date""",
+        - Deadline or date
+        
+        IMPORTANT: Return the response as a JSON object with the following structure:
+        {{
+            "recommendations": [
+                {{
+                    "title": "string",
+                    "description": "string",
+                    "match_score": "float",
+                    "explanation": "string",
+                    "date_or_deadline": "string"
+                }}
+            ]
+        }}""",
         agent=agent,
-        expected_output="List of personalized recommendations with detailed explanations"
+        expected_output="JSON object with a list of personalized recommendations"
     )
 
 def create_weekly_digest_task(agent, student_id: str) -> Task:
-
     return Task(
         description=f"""Create a weekly personalized digest for student {student_id}.
         
@@ -39,7 +50,40 @@ def create_weekly_digest_task(agent, student_id: str) -> Task:
         4. Upcoming deadlines
         5. Skills they might want to develop
         
-        Format as an engaging, personalized newsletter.""",
+        Format as an engaging, personalized newsletter.
+
+        IMPORTANT: Return the response as a JSON object with the following structure:
+        {{
+            "weekly_digest": {{
+                "top_events": [
+                    {{
+                        "title": "string",
+                        "description": "string",
+                        "date": "string"
+                    }}
+                ],
+                "new_clubs": [
+                    {{
+                        "name": "string",
+                        "description": "string"
+                    }}
+                ],
+                "trending_opportunities": [
+                    {{
+                        "title": "string",
+                        "description": "string",
+                        "deadline": "string"
+                    }}
+                ],
+                "upcoming_deadlines": [
+                    {{
+                        "title": "string",
+                        "deadline": "string"
+                    }}
+                ],
+                "skills_to_develop": ["string"]
+            }}
+        }}""",
         agent=agent,
-        expected_output="Formatted weekly digest with personalized content"
+        expected_output="JSON object with a structured weekly digest"
     )

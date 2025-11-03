@@ -38,5 +38,5 @@ def create_trending_events_task(agent) -> Task:
         - Seats remaining (if applicable)
         - Registration deadline""",
         agent=agent,
-        expected_output="List of trending events with urgency indicators"
+        expected_output="JSON object with a list of trending events with urgency indicators"
     )
