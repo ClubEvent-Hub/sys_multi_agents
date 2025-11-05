@@ -11,3 +11,6 @@ sqlalchemy>=2.0.23
 pytest>=7.4.3
 psycopg2-binary
 asyncpg
+jwt
+jose
+passlib
