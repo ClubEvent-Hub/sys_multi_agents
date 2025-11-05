@@ -1,4 +1,4 @@
-crewai==1.2.1
+crewai
 crewai-tools==1.2.1
 langchain-community>=0.0.29
 langchain-openai>=0.0.8
@@ -15,4 +15,5 @@ jwt
 jose
 passlib
 bcrypt
-PyJWT
+PyJWT>=2.8.0
+
