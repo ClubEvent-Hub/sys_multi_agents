@@ -73,7 +73,3 @@ def delete_club(club_id: int, db: Session = Depends(get_db)):
     )
 
 
-@router.get("/", status_code=status.HTTP_200_OK)
-def get_all_clubs(db: Session = Depends(get_db)):
-    clubs = db.query(Club).all()
-    return [{"id": c.id, "name": c.name, "email": c.email, "description": c.description} for c in clubs]
