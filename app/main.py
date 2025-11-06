@@ -17,9 +17,9 @@ app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:3000/",
-        "https://club-student-hub.vercel.app/", 
-        "https://sys-multi-agents.onrender.com/",
+        "http://localhost:3000",
+        "https://club-student-hub.vercel.app", 
+        "https://sys-multi-agents.onrender.com",
         ""
     ],
     allow_credentials=True,
